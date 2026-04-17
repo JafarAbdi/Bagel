@@ -1,0 +1,65 @@
+[workspace]
+authors   = ["JafarAbdi <jafar.uruc@gmail.com>"]
+channels  = ["conda-forge"]
+name      = "BAGEL"
+platforms = ["linux-64"]
+version   = "0.1.0"
+
+[tasks]
+download-weights = "python download_weights.py"
+app              = "python app.py --mode 2 --server_name 0.0.0.0"
+
+[activation.env]
+LD_LIBRARY_PATH      = "$CONDA_PREFIX/lib"
+TORCH_CUDA_ARCH_LIST = "$(nvidia-smi --query-gpu=compute_cap --format=csv,noheader)"
+# Conda's cross-compiler provides consistent headers (patched via activation script).
+CXX = "$CONDA_PREFIX/bin/x86_64-conda-linux-gnu-g++"
+CC  = "$CONDA_PREFIX/bin/x86_64-conda-linux-gnu-gcc"
+
+[dependencies]
+python = "3.10.*"
+# openssl = "<2"
+# GCC 11 — headers patched for CUDA 12.8 nvcc via scripts/patch_shared_ptr.sh.
+# gcc = "11.*"
+# gxx = "11.*"
+# CUDA dev packages.
+cuda-nvcc       = "12.8.*"
+cuda-cudart-dev = "12.8.*"
+cuda-nvtx-dev   = "*"
+libcublas-dev   = "*"
+libcurand-dev   = "*"
+libcusolver-dev = "*"
+libcusparse-dev = ">=12"
+cuda-version    = "12.8.*"
+
+[pypi-options]
+no-build-isolation = ["flash_attn"]
+
+# pixi add --pypi $(cat requirements.txt)
+[pypi-dependencies]
+decord          = "==0.6.0"
+einops          = "==0.8.1"
+huggingface-hub = "==0.29.1"
+matplotlib      = "==3.7.0"
+numpy           = "==1.24.4"
+opencv-python   = "==4.7.0.72"
+pyarrow         = "==11.0.0"
+pyyaml          = "==6.0.2"
+requests        = "==2.32.3"
+safetensors     = "==0.4.5"
+scipy           = "==1.10.1"
+sentencepiece   = "==0.1.99"
+torch           = "==2.5.1"
+torchvision     = "==0.20.1"
+transformers    = "==4.49.0"
+accelerate      = ">=0.34.0"
+wandb           = ">=0.26.0, <0.27"
+gradio          = ">=5.38.2, <6"
+setuptools      = ">=82.0.1, <83"
+wheel           = ">=0.46.3, <0.47"
+ninja           = ">=1.13.0, <2"
+bitsandbytes    = ">=0.49.2, <0.50"
+xlsxwriter      = ">=3.2.9, <4"
+triton          = ">=3.1.0, <4"
+flash-attn      = { url = "https://github.com/Dao-AILab/flash-attention/releases/download/v2.7.4.post1/flash_attn-2.7.4.post1+cu12torch2.5cxx11abiFALSE-cp310-cp310-linux_x86_64.whl" }
+hf-transfer     = ">=0.1.9, <0.2"

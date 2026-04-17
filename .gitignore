@@ -8,4 +8,6 @@ eval_results
 tests
 .DS_Store
 gradio.sh
-data_example
+data_example# pixi environments
+.pixi/*
+!.pixi/config.toml
